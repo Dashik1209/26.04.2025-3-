@@ -1,42 +1,56 @@
-class Rectangle:
+import matplotlib.pyplot as plt
+import numpy as np
 
-    def __init__(self, height, length):
-        self.__height = height  
-        self.__length = length  
-        self.__square = self.__calculate_square()  
-        self.__perimeter = self.__calculate_perimeter()  
+num_original_points = 5
+num_shifted_points = 10
+original_points_x = np.random.rand(num_original_points) * 17
+original_points_y = np.random.rand(num_original_points) * 12
 
-    def getHigh(self):
-        return self.__height
+shifted_x_data = []
+shifted_y_data = []
+central_x_means = []
+central_y_means = []
+x_errors = []
+y_errors = []
 
-    def setHigh(self, height):
-        self.__height = height
-        self.__square = self.__calculate_square()
-        self.__perimeter = self.__calculate_perimeter()
+for i in range(num_original_points):
+    x_deviations = np.random.normal(0, 0.9, num_shifted_points)
+    y_deviations = np.random.normal(0, 0.7, num_shifted_points)
+    x_shifted = original_points_x[i] + x_deviations
+    y_shifted = original_points_y[i] + y_deviations
 
-    def getLength(self):
-        return self.__length
+    shifted_x_data.append(x_shifted)
+    shifted_y_data.append(y_shifted)
 
-    def setLength(self, length):
-        self.__length = length
-        self.__square = self.__calculate_square()
-        self.__perimeter = self.__calculate_perimeter()
+    x_mean = np.mean(x_shifted)
+    y_mean = np.mean(y_shifted)
+    x_error = np.std(x_shifted)  
+    y_error = np.std(y_shifted)  
 
-    def getSquare(self):
-        return self.__square
+    central_x_means.append(x_mean)
+    central_y_means.append(y_mean)
+    x_errors.append(x_error)
+    y_errors.append(y_error)
 
-    def getPerimeter(self):
-        return self.__perimeter
+plt.figure(figsize=(10, 10))
 
-    def __calculate_square(self):
-        return self.__height * self.__length
+colors = ['blue', 'green', 'red', 'purple', 'orange']
+markers = ['o', 's', '^', 'v', 'D']
 
-    def __calculate_perimeter(self):
-        return 2 * (self.__height + self.__length)
+for i in range(num_original_points):
+    plt.scatter(shifted_x_data[i], shifted_y_data[i],
+                c=colors[i], marker=markers[i], label=f'Смещенные точки {i+1}', alpha=0.5)
 
+plt.errorbar(central_x_means, central_y_means, xerr=x_errors, yerr=y_errors,
+             fmt='*', color='black', label='Центральные точки с погрешностями', markersize=10)
 
+plt.scatter(original_points_x, original_points_y,
+            marker='x', s=100, color='black', label='Исходные точки')
 
-rectangle.setHigh(8)
-rectangle.setLength(12)
+plt.title('Смещенные и центральные точки с погрешностями')
+plt.xlabel('x')
+plt.ylabel('y')
 
-print(f"Новая высота: {rectangle.getHigh()}")  
+plt.legend(loc='best')
+
+plt.show()

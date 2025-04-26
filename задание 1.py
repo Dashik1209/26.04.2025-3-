@@ -1,21 +1,25 @@
-import math
+import matplotlib.pyplot as plt
+import numpy as np
 
-class Point2D:
-    
+x = np.linspace(0, 10)
+y1 = x
+y2 = 2 * x
+y3 = 3 * x
+y4 = x**2
+y5 = 2 * x**2
 
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
-
-    def distance_to(self, other_point):
-        dx = self.x - other_point.x
-        dy = self.y - other_point.y
-        return math.sqrt(dx**2 + dy**2)
-
-    def __str__(self):
-        return f"x:{self.x} y:{self.y}"
-
-    def __repr__(self):
-        return f"Point2D(x={self.x}, y={self.y})"
+plt.figure(figsize=(10, 10))
 
 
+plt.plot(x, y1, label='y = x', color='blue')
+plt.plot(x, y2, label='y = 2x', color='green')
+plt.plot(x, y3, label='y = 3x', color='red')
+plt.plot(x, y4, label='y = x^2', color='purple')
+plt.plot(x, y5, label='y = 2x^2', color='orange')
+
+plt.title('Графики функций')
+plt.xlabel('x')
+plt.ylabel('y')
+
+plt.legend(loc='lower left') 
+plt.show()
